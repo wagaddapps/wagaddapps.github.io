@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Digi4All – Software and AI for everyone</title>
+<meta name="description" content="Digi4All designs software and builds AI for apps and businesses. Based in Dubai Silicon Oasis.">
+<meta property="og:title" content="Digi4All – Software and AI for everyone">
+<meta property="og:description" content="Software design, AI research and consultancy, and AI development. Based in Dubai Silicon Oasis.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://digi4all.ai/">
+<link rel="canonical" href="https://digi4all.ai/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f1b3d'/%3E%3Ctext x='32' y='47' font-size='42' font-weight='800' text-anchor='middle' font-family='Arial,sans-serif' fill='%23ffc93c'%3E4%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=Noto+Naskh+Arabic:wght@500;700&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('js');</script>
+<style>
+  :root {
+    --ink: #0f1b3d;
+    --ink-soft: #1c2a55;
+    --paper: #f7f8fb;
+    --white: #ffffff;
+    --signal: #ffc93c;
+    --blue: #2f4bff;
+    --slate: #566079;
+    --line: #dde2ee;
+    --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+    --body: "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --arabic: "Noto Naskh Arabic", "Segoe UI", serif;
+    --ease: cubic-bezier(.2, .8, .2, 1);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 72px; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font-family: var(--body); font-size: 18px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    overflow-x: hidden;
+  }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; border-radius: 4px; }
+  .wrap { width: min(1120px, 100% - 48px); margin-inline: auto; position: relative; }
+
+  .site-header { position: sticky; top: 0; z-index: 10; background: rgba(15,27,61,.96); color: var(--white); backdrop-filter: blur(6px); }
+  .site-header .wrap { display: flex; align-items: center; justify-content: space-between; min-height: 64px; gap: 16px; }
+  .brand { display: inline-flex; align-items: center; font-family: var(--display); font-weight: 800; font-size: 22px; text-decoration: none; letter-spacing: -.01em; }
+  .brand .four { display: inline-grid; place-items: center; background: var(--signal); color: var(--ink); width: 26px; height: 30px; border-radius: 6px; margin-inline: 2px; font-size: 20px; transition: transform .5s var(--ease); }
+  .brand:hover .four { transform: rotate(-8deg) scale(1.08); }
+  .nav { display: flex; gap: 22px; font-size: 16px; font-weight: 500; }
+  .nav a { text-decoration: none; opacity: .88; padding: 6px 0; }
+  .nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 6px; }
+
+  .hero { background: var(--ink); color: var(--white); padding: 72px 0 104px; position: relative; overflow: hidden; isolation: isolate; }
+  .net { position: absolute; right: -4%; top: 8%; width: min(640px, 62%); height: auto; z-index: -1; opacity: .55; pointer-events: none; }
+  .net line { stroke: #3b4d8a; stroke-width: 1.2; stroke-dasharray: 6 8; animation: flow 14s linear infinite; }
+  .net circle { fill: var(--signal); transform-box: fill-box; transform-origin: center; animation: pulse 3.6s ease-in-out infinite; animation-delay: var(--d, 0s); }
+  .net circle.dim { fill: #6f86ff; }
+  @keyframes flow { to { stroke-dashoffset: -140; } }
+  @keyframes pulse { 0%,100% { transform: scale(1); opacity: .9; } 50% { transform: scale(1.9); opacity: .35; } }
+
+  .wordmark { font-family: var(--display); font-weight: 800; font-size: clamp(64px, 17vw, 208px); line-height: .9; letter-spacing: -.045em; margin: 0 0 40px; display: flex; align-items: center; flex-wrap: wrap; }
+  .wordmark .ch { display: inline-block; animation: rise .9s var(--ease) both; animation-delay: calc(var(--i) * 70ms + 150ms); }
+  .wordmark .four { display: inline-grid; place-items: center; background: var(--signal); color: var(--ink); width: .62em; height: .78em; border-radius: .12em; margin-inline: .06em; font-size: .82em; animation: flip 1.1s var(--ease) both; animation-delay: 520ms; }
+  @keyframes rise { from { opacity: 0; transform: translateY(.45em) rotate(3deg); } to { opacity: 1; transform: none; } }
+  @keyframes flip { from { opacity: 0; transform: perspective(500px) rotateY(-100deg) scale(.7); } to { opacity: 1; transform: none; } }
+
+  .hero h1 { font-family: var(--display); font-weight: 700; font-size: clamp(28px, 4.2vw, 48px); line-height: 1.12; letter-spacing: -.02em; margin: 0 0 20px; max-width: 18em; animation: rise .9s var(--ease) both; animation-delay: 1s; }
+  .hero p { max-width: 36em; margin: 0 0 32px; color: #c9d1ea; font-size: 20px; animation: rise .9s var(--ease) both; animation-delay: 1.15s; }
+  .hero .actions { animation: rise .9s var(--ease) both; animation-delay: 1.3s; }
+  .btn { display: inline-block; text-decoration: none; font-weight: 600; background: var(--signal); color: var(--ink); padding: 14px 26px; border-radius: 10px; font-size: 17px; transition: transform .2s var(--ease), background .2s ease, box-shadow .2s ease; }
+  .btn:hover { background: #ffd966; transform: translateY(-3px); box-shadow: 0 10px 24px rgba(255,201,60,.28); }
+  .btn.ghost { background: transparent; color: var(--white); border: 2px solid #4a5a8f; margin-inline-start: 12px; box-shadow: none; }
+  .btn.ghost:hover { background: var(--ink-soft); box-shadow: none; }
+
+  section { padding: 88px 0; }
+  h2 { font-family: var(--display); font-weight: 800; font-size: clamp(30px, 4vw, 44px); line-height: 1.1; letter-spacing: -.025em; margin: 0 0 12px; }
+  .lede { color: var(--slate); max-width: 38em; margin: 0 0 48px; }
+
+  .icon { width: 64px; height: 64px; border-radius: 16px; display: grid; place-items: center; background: var(--signal); color: var(--ink); margin-bottom: 18px; transition: transform .35s var(--ease), box-shadow .35s ease; }
+  .icon svg { width: 38px; height: 38px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+  .icon.dark { background: var(--ink); color: var(--signal); }
+  .icon svg .draw { stroke-dasharray: 1; stroke-dashoffset: 0; }
+  .js .icon:not(.in) svg .draw { stroke-dashoffset: 1; }
+  .js .icon.in svg .draw { animation: draw 1.1s var(--ease) both; animation-delay: calc(var(--k, 0) * 120ms + 200ms); }
+  @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+
+  .activities { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 3px solid var(--ink); }
+  .activity { padding: 32px 28px 12px 0; }
+  .activity + .activity { padding-left: 28px; border-left: 1px solid var(--line); }
+  .activity:hover .icon { transform: translateY(-6px) rotate(-4deg); box-shadow: 0 12px 24px rgba(15,27,61,.18); }
+  .activity h3 { font-family: var(--display); font-weight: 700; font-size: 24px; line-height: 1.2; margin: 0 0 10px; letter-spacing: -.015em; }
+  .activity p { margin: 0 0 16px; color: var(--slate); }
+  .activity a { color: var(--blue); font-weight: 600; text-underline-offset: 4px; }
+
+  .apps { background: var(--white); border-block: 1px solid var(--line); }
+  .app { display: grid; grid-template-columns: 64px 200px 1fr auto; gap: 28px; align-items: center; padding: 28px 0; border-top: 1px solid var(--line); transition: background .3s ease; }
+  .app:last-child { border-bottom: 1px solid var(--line); }
+  .app .icon { margin: 0; }
+  .app:hover .icon { transform: scale(1.1) rotate(-5deg); }
+  .app h3 { font-family: var(--display); font-weight: 800; font-size: 28px; margin: 0; letter-spacing: -.02em; }
+  .app h3 .ar { font-family: var(--arabic); font-weight: 700; font-size: 24px; margin-inline-start: 10px; color: var(--slate); }
+  .app p { margin: 0; color: var(--slate); max-width: 38em; }
+  .status { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; white-space: nowrap; background: #fff3cf; color: #6b4e00; padding: 4px 12px; border-radius: 999px; }
+  .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #e0a100; animation: blink 1.8s ease-in-out infinite; }
+  @keyframes blink { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.7); } }
+
+  .contact { background: var(--ink); color: var(--white); overflow: hidden; }
+  .contact .icon { margin-bottom: 20px; }
+  .contact h2 { margin-bottom: 16px; }
+  .contact p { color: #c9d1ea; max-width: 34em; margin: 0 0 28px; }
+  .mail { font-family: var(--display); font-weight: 700; font-size: clamp(26px, 5vw, 52px); letter-spacing: -.02em; color: var(--signal); text-decoration: none; word-break: break-all; background: linear-gradient(var(--signal), var(--signal)) 0 100% / 0 3px no-repeat; transition: background-size .5s var(--ease); padding-bottom: 6px; }
+  .mail:hover { background-size: 100% 3px; }
+
+  footer { background: #0a1330; color: #9aa6c9; padding: 28px 0; font-size: 15px; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 32px; }
+  footer strong { color: #dfe5f7; font-weight: 600; }
+
+  .js .reveal { opacity: 0; transform: translateY(22px); transition: opacity .8s var(--ease), transform .8s var(--ease); transition-delay: calc(var(--n, 0) * 110ms); }
+  .js .reveal.in { opacity: 1; transform: none; }
+
+  @media (max-width: 860px) {
+    section { padding: 64px 0; }
+    .hero { padding: 48px 0 72px; }
+    .net { width: 90%; right: -20%; top: 2%; opacity: .3; }
+    .activities { grid-template-columns: 1fr; }
+    .activity, .activity + .activity { padding: 28px 0 8px; border-left: 0; }
+    .activity + .activity { border-top: 1px solid var(--line); }
+    .app { grid-template-columns: 64px 1fr; gap: 8px 18px; align-items: start; }
+    .app .icon { grid-row: span 3; }
+    .btn.ghost { margin: 12px 0 0; }
+    .nav { gap: 16px; font-size: 15px; }
+  }
+  @media (max-width: 480px) { body { font-size: 17px; } .nav a:first-child { display: none; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .js .reveal { opacity: 1; transform: none; }
+    .js .icon:not(.in) svg .draw { stroke-dashoffset: 0; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Digi4All home">Digi<span class="four" aria-hidden="true">4</span>All</a>
+    <nav class="nav" aria-label="Main">
+      <a href="#what-we-do">What we do</a>
+      <a href="#apps">Our apps</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <div class="hero">
+    <svg class="net" viewBox="0 0 600 400" aria-hidden="true" focusable="false">
+      <g>
+        <line x1="60" y1="90" x2="190" y2="170"/><line x1="190" y1="170" x2="330" y2="80"/>
+        <line x1="190" y1="170" x2="260" y2="290"/><line x1="330" y1="80" x2="470" y2="150"/>
+        <line x1="260" y1="290" x2="420" y2="300"/><line x1="470" y1="150" x2="420" y2="300"/>
+        <line x1="470" y1="150" x2="560" y2="60"/><line x1="330" y1="80" x2="260" y2="290"/>
+        <line x1="420" y1="300" x2="540" y2="350"/><line x1="60" y1="90" x2="110" y2="260"/>
+        <line x1="110" y1="260" x2="260" y2="290"/>
+      </g>
+      <circle cx="60" cy="90" r="5" style="--d:0s"/><circle class="dim" cx="190" cy="170" r="7" style="--d:.5s"/>
+      <circle cx="330" cy="80" r="5" style="--d:1s"/><circle class="dim" cx="470" cy="150" r="7" style="--d:1.5s"/>
+      <circle cx="260" cy="290" r="5" style="--d:2s"/><circle cx="420" cy="300" r="6" style="--d:2.5s"/>
+      <circle class="dim" cx="560" cy="60" r="4" style="--d:.8s"/><circle class="dim" cx="110" cy="260" r="5" style="--d:1.8s"/>
+      <circle cx="540" cy="350" r="4" style="--d:3s"/>
+    </svg>
+    <div class="wrap">
+      <div class="wordmark" aria-hidden="true"><span class="ch" style="--i:0">D</span><span class="ch" style="--i:1">i</span><span class="ch" style="--i:2">g</span><span class="ch" style="--i:3">i</span><span class="four">4</span><span class="ch" style="--i:6">A</span><span class="ch" style="--i:7">l</span><span class="ch" style="--i:8">l</span></div>
+      <h1>Software and AI that people actually use.</h1>
+      <p>We design apps, research where AI helps, and build it into products. Our own apps start in Kuwait and the Gulf.</p>
+      <div class="actions">
+        <a class="btn" href="#contact">Talk to us</a>
+        <a class="btn ghost" href="#apps">See our apps</a>
+      </div>
+    </div>
+  </div>
+
+  <section id="what-we-do">
+    <div class="wrap">
+      <h2 class="reveal">What we do</h2>
+      <p class="lede reveal" style="--n:1">Three services, one small team. Tell us what you need and we’ll tell you honestly whether we’re the right fit.</p>
+      <div class="activities">
+        <article class="activity reveal" style="--n:1">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48"><rect class="draw" pathLength="1" style="--k:0" x="6" y="9" width="36" height="30" rx="5"/><path class="draw" pathLength="1" style="--k:1" d="M6 18h36"/><path class="draw" pathLength="1" style="--k:2" d="M19 25l-5 4 5 4"/><path class="draw" pathLength="1" style="--k:3" d="M29 25l5 4-5 4"/><path class="draw" pathLength="1" style="--k:4" d="M26 24l-4 10"/></svg>
+          </div>
+          <h3>Software design</h3>
+          <p>Mobile apps and web platforms, designed around how people really use them and built to be maintained.</p>
+          <a href="mailto:info@digi4all.ai?subject=Software%20design">Ask about software design</a>
+        </article>
+        <article class="activity reveal" style="--n:2">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48"><circle class="draw" pathLength="1" style="--k:0" cx="21" cy="21" r="12"/><path class="draw" pathLength="1" style="--k:1" d="M30 30l11 11"/><path class="draw" pathLength="1" style="--k:2" d="M21 14l1.8 4.9 4.9 1.8-4.9 1.8L21 27.4l-1.8-4.9-4.9-1.8 4.9-1.8z"/></svg>
+          </div>
+          <h3>AI research and consultancy</h3>
+          <p>Practical advice on where AI will save time or money in your business, and where it won’t.</p>
+          <a href="mailto:info@digi4all.ai?subject=AI%20research%20and%20consultancy">Ask about AI consultancy</a>
+        </article>
+        <article class="activity reveal" style="--n:3">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48"><rect class="draw" pathLength="1" style="--k:0" x="12" y="12" width="24" height="24" rx="5"/><rect class="draw" pathLength="1" style="--k:1" x="19" y="19" width="10" height="10" rx="2"/><path class="draw" pathLength="1" style="--k:2" d="M18 6v6M24 6v6M30 6v6M18 36v6M24 36v6M30 36v6M6 18h6M6 24h6M6 30h6M36 18h6M36 24h6M36 30h6"/></svg>
+          </div>
+          <h3>AI development</h3>
+          <p>Assistants, personalisation, and image or voice recognition built into your product and tested with real users.</p>
+          <a href="mailto:info@digi4all.ai?subject=AI%20development">Ask about AI development</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="apps" class="apps">
+    <div class="wrap">
+      <h2 class="reveal">Our apps</h2>
+      <p class="lede reveal" style="--n:1">Products we’re building ourselves. Each one is in development and will get its own page here when it launches.</p>
+      <div class="app-list">
+        <article class="app reveal">
+          <div class="icon dark" aria-hidden="true">
+            <svg viewBox="0 0 48 48"><circle class="draw" pathLength="1" style="--k:0" cx="28" cy="27" r="11"/><circle class="draw" pathLength="1" style="--k:1" cx="28" cy="27" r="5.5"/><path class="draw" pathLength="1" style="--k:2" d="M6 10v9a4 4 0 0 0 8 0v-9M10 10v9M10 23v16"/><path class="draw" pathLength="1" style="--k:3" d="M40 8c-6 0-10 4-10 9 6 0 10-3 10-9z"/></svg>
+          </div>
+          <h3>Luqma <span class="ar" lang="ar" dir="rtl">لقمة</span></h3>
+          <p>Food and nutrition tracking made for the Gulf. Photograph a meal or a delivery order and see calories, protein and what to eat next. Available in English, Arabic and French.</p>
+          <span class="status">In development</span>
+        </article>
+        <article class="app reveal">
+          <div class="icon dark" aria-hidden="true">
+            <svg viewBox="0 0 48 48"><rect class="draw" pathLength="1" style="--k:0" x="11" y="15" width="6" height="18" rx="2"/><rect class="draw" pathLength="1" style="--k:1" x="31" y="15" width="6" height="18" rx="2"/><path class="draw" pathLength="1" style="--k:2" d="M6 21v6M42 21v6M17 24h14"/></svg>
+          </div>
+          <h3>Gym app</h3>
+          <p>A training companion that knows the machines in your gym, plans your week around your goal, and records each exercise you complete.</p>
+          <span class="status">In development</span>
+        </article>
+        <article class="app reveal">
+          <div class="icon dark" aria-hidden="true">
+            <svg viewBox="0 0 48 48"><rect class="draw" pathLength="1" style="--k:0" x="7" y="10" width="34" height="28" rx="6"/><path class="draw" pathLength="1" style="--k:1" d="M20 18l12 6-12 6z"/></svg>
+          </div>
+          <h3>FlickDate</h3>
+          <p>A mobile app for short videos and your personal media library, with downloads for offline viewing.</p>
+          <span class="status">In development</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <div class="icon reveal" aria-hidden="true">
+        <svg viewBox="0 0 48 48"><rect class="draw" pathLength="1" style="--k:0" x="6" y="11" width="36" height="26" rx="5"/><path class="draw" pathLength="1" style="--k:1" d="M8 15l16 12 16-12"/></svg>
+      </div>
+      <h2 class="reveal" style="--n:1">Contact</h2>
+      <p class="reveal" style="--n:2">For projects, partnerships or questions about our apps, write to us. We answer within two working days.</p>
+      <a class="mail reveal" style="--n:3" href="mailto:info@digi4all.ai">info@digi4all.ai</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span><strong>DIGI4 ALL - FZCO</strong> · Licence no. 94823</span>
+    <span>IFZA Properties, Dubai Silicon Oasis, Dubai, UAE</span>
+  </div>
+</footer>
+
+<script>
+  (function () {
+    var els = document.querySelectorAll('.reveal, .icon');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.2 });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+</script>
+</body>
+</html>
