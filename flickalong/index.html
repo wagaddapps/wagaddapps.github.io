@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FlickAlong — movie night, sorted together</title>
+  <meta name="description" content="Swipe films and shows with your partner, friends or family. Match on what you all like, see where it streams or what's on in cinemas nearby, and play it from your own streaming subscription." />
+  <meta name="theme-color" content="#0B0C10" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="FlickAlong" />
+  <meta property="og:title" content="FlickAlong — movie night, sorted together" />
+  <meta property="og:description" content="Swipe together, match in seconds, and press play." />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="style.css" />
+  <script>
+    document.documentElement.classList.add('js');
+    // "Pause animations" remembered from a previous visit (read before the first paint, so nothing moves first).
+    try { if (localStorage.getItem('flickalong.motion') === 'off') document.documentElement.classList.add('no-motion'); } catch (e) {}
+  </script>
+</head>
+<body class="home">
+  <a class="skip-link" href="#main">Skip to content</a>
+  <!-- Three soft brand glows drifting very slowly behind the page (still with "reduce motion"). -->
+  <div class="glows" aria-hidden="true"><span class="glow glow--teal"></span><span class="glow glow--blue"></span><span class="glow glow--lime"></span></div>
+
+  <header class="site-header">
+    <a href="index.html" class="brand"><img src="logo.svg" alt="FlickAlong" style="height:38px;display:block"/></a>
+    <nav class="nav" aria-label="Main">
+      <a href="#features">Features</a>
+      <a href="#flix">Flix</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="support.html">Support</a>
+      <a class="nav-cta" href="#download">Get the app</a>
+    </nav>
+  </header>
+
+  <!--
+    SCREENSHOTS — every <figure class="device" data-shot="NAME"> holds a placeholder (.shot) or, once
+    Walid has sent the picture, <img src="img/NAME.jpg">. Done so far: hero-iphone-home, swipe, library, watch-tonight-pick, watch-tonight, shorts, cinemas, flix-iphone.
+    When Walid sends the picture: save it as img/NAME.png and replace the <div class="shot">…</div>
+    with <img src="img/NAME.png" alt="…" loading="lazy" />. The list is in SCREENSHOTS.md.
+
+    STORE BUTTONS — FlickAlong is not on the stores yet (checked 14 October 2026). The day it is,
+    turn each <span class="store-btn is-soon"> into <a class="store-btn" href="…"> and remove its "Soon" tag:
+      App Store   → https://apps.apple.com/app/id6811039503
+      Google Play → https://play.google.com/store/apps/details?id=com.flickalong.app
+  -->
+
+  <main id="main">
+
+    <!-- ============ Hero ============ -->
+    <section class="hero">
+      <div class="wrap hero__grid">
+        <div class="hero__copy reveal">
+          <p class="eyebrow">For couples, friends &amp; family</p>
+          <h1 class="display">Stop scrolling.<br /><span class="grad">Start watching</span> together.</h1>
+          <p class="lead-lg">Swipe films and shows with the people you watch with. The moment you all like the same title, it&rsquo;s a match. Then see where it streams, what&rsquo;s on in cinemas nearby, or play it from your own subscription with Flix.</p>
+
+          <div class="store-row" id="download">
+            <span class="store-btn is-soon" aria-label="App Store, for iPhone and iPad: coming soon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2.5"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+              <span><small>iPhone &amp; iPad</small><b>App Store <span class="soon">Soon</span></b></span>
+            </span>
+            <span class="store-btn store-btn--ghost is-soon" aria-label="Google Play, for Android: coming soon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span><small>Android</small><b>Google Play <span class="soon">Soon</span></b></span>
+            </span>
+          </div>
+
+          <ul class="stats" aria-label="FlickAlong at a glance">
+            <li class="stat"><b>Swipe</b><span>then match</span></li>
+            <li class="stat"><b>Up to 7</b><span>in a group room</span></li>
+            <li class="stat"><b>Nearby</b><span>cinema times</span></li>
+            <li class="stat"><b>On TV</b><span>AirPlay &middot; Chromecast</span></li>
+          </ul>
+        </div>
+
+        <div class="hero__stage reveal" role="group" aria-label="FlickAlong on iPad and iPhone">
+          <figure class="device device--tablet" data-shot="hero-ipad-home">
+            <div class="device__screen"><div class="shot"><span class="shot__tag">Screenshot</span><b>Home</b><small>iPad &middot; landscape</small></div></div>
+          </figure>
+          <figure class="device device--phone" data-shot="hero-iphone-home">
+            <div class="device__screen"><img src="img/home.jpg" alt="FlickAlong home on iPhone: a movie picked for you, the custom session with your streaming services, and What should I watch?" width="890" height="1928" /></div>
+          </figure>
+          <span class="chip-float chip-float--match" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            It&rsquo;s a match!
+          </span>
+          <span class="chip-float chip-float--next" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+            Next episode in 5 s
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Ticker ============ -->
+    <div class="ticker" role="region" aria-label="Highlights">
+      <div class="ticker__track">
+        <ul>
+          <li>Swipe &amp; match</li>
+          <li>Trailer before you decide</li>
+          <li>Partner &amp; best friends</li>
+          <li>Group rooms</li>
+          <li>Watch Tonight</li>
+          <li>Mutual Roulette</li>
+          <li>Surprise me</li>
+          <li>Watch-together assistant</li>
+          <li>Send it to a friend</li>
+          <li>Cinema showtimes</li>
+          <li>Where to watch</li>
+          <li>Shorts &amp; trailers</li>
+          <li>New-release alerts</li>
+          <li>Couple Wrapped</li>
+          <li>Continue watching</li>
+          <li>Next episode</li>
+          <li>Live TV guide</li>
+          <li>Programme reminders</li>
+          <li>Favourite lists</li>
+          <li>Downloads</li>
+          <li>Sleep timer</li>
+          <li>Skip intro</li>
+          <li>Parental code</li>
+          <li>iPhone &amp; iPad in sync</li>
+          <li>Jellyfin &amp; Emby</li>
+          <li>AirPlay</li>
+          <li>Chromecast</li>
+          <li>Picture in Picture</li>
+        </ul>
+        <ul aria-hidden="true">
+          <li>Swipe &amp; match</li>
+          <li>Trailer before you decide</li>
+          <li>Partner &amp; best friends</li>
+          <li>Group rooms</li>
+          <li>Watch Tonight</li>
+          <li>Mutual Roulette</li>
+          <li>Surprise me</li>
+          <li>Watch-together assistant</li>
+          <li>Send it to a friend</li>
+          <li>Cinema showtimes</li>
+          <li>Where to watch</li>
+          <li>Shorts &amp; trailers</li>
+          <li>New-release alerts</li>
+          <li>Couple Wrapped</li>
+          <li>Continue watching</li>
+          <li>Next episode</li>
+          <li>Live TV guide</li>
+          <li>Programme reminders</li>
+          <li>Favourite lists</li>
+          <li>Downloads</li>
+          <li>Sleep timer</li>
+          <li>Skip intro</li>
+          <li>Parental code</li>
+          <li>iPhone &amp; iPad in sync</li>
+          <li>Jellyfin &amp; Emby</li>
+          <li>AirPlay</li>
+          <li>Chromecast</li>
+          <li>Picture in Picture</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ============ Features ============ -->
+    <section class="section" id="features">
+      <div class="wrap">
+
+        <div class="split">
+          <div class="split__copy reveal">
+            <p class="eyebrow">The swipe</p>
+            <h2 class="h2">Left is a no. <span class="grad">Right is a yes.</span></h2>
+            <p class="lead-lg">One card, one film or series, one decision. Swipe left if it&rsquo;s not for tonight, right if you&rsquo;d watch it. Everyone decides on their own phone.</p>
+            <ul class="checks">
+              <li><span><b>Already seen it?</b> Tap the eye: it leaves your queue, and you can rate it from 1 to 10 stars.</span></li>
+              <li><span><b>Watch the trailer to decide.</b> One tap plays it right from the card, with the summary and the rating. Changed your mind? Undo your last swipe.</span></li>
+              <li><span><b>Share it.</b> Send the title to a best friend, or share a link that opens the app.</span></li>
+              <li><span><b>One tap further.</b> See it in cinemas near you, or play it with Flix when it&rsquo;s in your library.</span></li>
+            </ul>
+          </div>
+          <div class="split__media phone-solo swipe-stage reveal">
+            <figure class="device device--phone" data-shot="swipe">
+              <div class="device__screen"><img src="img/swipe.jpg" alt="A swipe card in FlickAlong: the film poster, its year, summary and rating, with the nope, seen and like buttons below" loading="lazy" width="702" height="1520" /></div>
+            </figure>
+            <span class="chip-float chip-float--nope" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Nope
+            </span>
+            <span class="chip-float chip-float--like" aria-hidden="true">
+              Like
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
+            <ul class="legend" aria-label="The buttons on a swipe card">
+              <li><span class="legend__dot" style="--c: var(--nope)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></span>Nope</li>
+              <li><span class="legend__dot" style="--c: #F59E0B"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></svg></span>Already seen, rate it</li>
+              <li><span class="legend__dot" style="--c: var(--like)"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>Like</li>
+              <li><span class="legend__dot" style="--c: var(--primary)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></span>Undo last swipe</li>
+              <li><span class="legend__dot" style="--c: var(--accent)"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="6 4 20 12 6 20 6 4"/></svg></span>Trailer</li>
+              <li><span class="legend__dot" style="--c: var(--body)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg></span>Share or send to a friend</li>
+              <li><span class="legend__dot" style="--c: var(--primary-strong)"><svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg></span>Play with Flix</li>
+              <li><span class="legend__dot" style="--c: var(--body)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg></span>In cinemas near you</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="split split--reverse">
+          <div class="split__copy reveal">
+            <p class="eyebrow">Swipe together</p>
+            <h2 class="h2">Decide together, not alone.</h2>
+            <p class="lead-lg">Link up with your partner, a best friend or the whole family. Everyone swipes on their own phone: right if you&rsquo;d watch it, left if not. When you all say yes, it&rsquo;s a match.</p>
+            <ul class="checks">
+              <li><span><b>Partner &amp; best friends.</b> Link in seconds with an invite code.</span></li>
+              <li><span><b>Group rooms.</b> Family and friends movie nights, up to 7 people.</span></li>
+              <li><span><b>Kept for later.</b> Likes, mutual matches and saved actors, all in your library.</span></li>
+            </ul>
+          </div>
+          <div class="split__media phone-solo reveal">
+            <figure class="device device--phone" data-shot="library">
+              <div class="device__screen"><img src="img/library.jpg" alt="My library in FlickAlong: likes, seen titles, mutual matches and saved actors, with Pick for us at the top" loading="lazy" width="890" height="1928" /></div>
+            </figure>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="split__copy reveal">
+            <p class="eyebrow">Tonight&rsquo;s pick</p>
+            <h2 class="h2">From &ldquo;what should we watch?&rdquo; to play.</h2>
+            <p class="lead-lg">Too many matches, or none yet? FlickAlong narrows it down for you.</p>
+            <ul class="checks">
+              <li><span><b>What should we watch?</b> Pick a style: from your likes, something new, or what you both matched.</span></li>
+              <li><span><b>Two ideas each time.</b> One film and one series; shuffle until it feels right.</span></li>
+              <li><span><b>Just say it.</b> &ldquo;90s thriller, not too gory&rdquo;: the Watch together assistant turns your mood into a swipe session.</span></li>
+              <li><span><b>Mutual Roulette &amp; Surprise Me.</b> Can&rsquo;t decide? Let FlickAlong pick.</span></li>
+            </ul>
+          </div>
+          <div class="split__media phone-pair reveal">
+            <figure class="device device--phone" data-shot="watch-tonight-pick">
+              <div class="device__screen"><img src="img/watch-tonight-pick.jpg" alt="What should we watch? in FlickAlong: pick a style, from my likes, something new, or what we both matched" loading="lazy" width="890" height="1928" /></div>
+            </figure>
+            <figure class="device device--phone" data-shot="watch-tonight">
+              <div class="device__screen"><img src="img/watch-tonight.jpg" alt="Tonight's proposals in FlickAlong: one film and one series, with a Shuffle both button" loading="lazy" width="890" height="1928" /></div>
+            </figure>
+          </div>
+        </div>
+
+        <div class="split split--reverse">
+          <div class="split__copy reveal">
+            <p class="eyebrow">Streaming or the big screen</p>
+            <h2 class="h2">Know where to watch it.</h2>
+            <p class="lead-lg">Every title shows the streaming services that have it: tap one to open it. Or head out, with what&rsquo;s on in cinemas near you.</p>
+            <ul class="checks">
+              <li><span><b>Where to watch.</b> The services that have each film or show.</span></li>
+              <li><span><b>Now in cinemas.</b> Real showtimes at theatres near you.</span></li>
+              <li><span><b>New-release alerts.</b> Pick your favourite genres and hear about new films.</span></li>
+            </ul>
+          </div>
+          <div class="split__media phone-solo reveal">
+            <figure class="device device--phone" data-shot="cinemas">
+              <div class="device__screen"><img src="img/cinemas.jpg" alt="Now playing in FlickAlong: films in cinemas near you, by city, with the number of cinemas showing each one" loading="lazy" width="890" height="1928" /></div>
+            </figure>
+          </div>
+        </div>
+
+        <div class="split">
+          <div class="split__copy reveal">
+            <p class="eyebrow">Shorts</p>
+            <h2 class="h2">Watch the trailer first.</h2>
+            <p class="lead-lg">Scroll trailers and clips one after the other. The moment one grabs you, you&rsquo;re two taps from the title.</p>
+            <ul class="checks">
+              <li><span><b>Trailers &amp; clips.</b> A feed of what&rsquo;s coming and what&rsquo;s worth a look, in the languages you choose.</span></li>
+              <li><span><b>From the trailer to the title.</b> One tap opens the film or series: like it, open it on the streaming service that has it, or see the showtimes in cinemas near you.</span></li>
+              <li><span><b>Already in your library?</b> When a trailer matches a title in Flix, play it from there.</span></li>
+            </ul>
+          </div>
+          <div class="split__media phone-solo reveal">
+            <figure class="device device--phone" data-shot="shorts">
+              <div class="device__screen"><img src="img/shorts.jpg" alt="Shorts in FlickAlong: a trailer playing, with View title and a link to YouTube" loading="lazy" width="890" height="1928" /></div>
+            </figure>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============ Flix ============ -->
+    <section class="section flix" id="flix">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Flix &middot; your own subscription</p>
+          <h2 class="h2">Your streaming account, <span class="grad">beautifully organised.</span></h2>
+          <p class="lead-lg">Already pay for a streaming service that gave you its own address and sign-in, or run your own media server? Add it to Flix: your library gets a polished home inside FlickAlong, and the titles you match play in one tap.</p>
+        </div>
+
+        <div class="flix__stage reveal">
+          <figure class="device device--tablet" data-shot="flix-ipad">
+            <div class="device__screen"><div class="shot"><span class="shot__tag">Screenshot</span><b>Flix library</b><small>iPad &middot; landscape</small></div></div>
+          </figure>
+          <figure class="device device--phone" data-shot="flix-iphone">
+            <div class="device__screen"><img src="img/flix-iphone.jpg" alt="Flix on iPhone: the Movies tab of your own library, with language, 4K, year and sort filters and a grid of posters" loading="lazy" width="738" height="1599" /></div>
+          </figure>
+        </div>
+
+        <div class="mini-grid">
+          <div class="mini reveal sheen">
+            <span class="mini__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></span>
+            <h3>Continue watching</h3>
+            <p>Pick up where you left off, or start over. A sleep timer stops the film when you don&rsquo;t.</p>
+          </div>
+          <div class="mini reveal sheen">
+            <span class="mini__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>
+            <h3>Just added</h3>
+            <p>New films and series first, after an automatic daily refresh, and a heads-up when a series you follow gets new episodes.</p>
+          </div>
+          <div class="mini reveal sheen">
+            <span class="mini__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg></span>
+            <h3>Series, done right</h3>
+            <p>Seasons, the episode list in the player, skip the intro, and the next episode starting by itself.</p>
+          </div>
+          <div class="mini reveal sheen">
+            <span class="mini__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="15" rx="2" ry="2"/><polyline points="17 2 12 7 7 2"/></svg></span>
+            <h3>Live TV guide</h3>
+            <p>What&rsquo;s on now and next, the full programme, and reminders before it starts.</p>
+          </div>
+          <div class="mini reveal sheen">
+            <span class="mini__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+            <h3>Lists your way</h3>
+            <p>Named lists for channels and for films and series, a Seen badge, and the option to hide what you&rsquo;ve already watched.</p>
+          </div>
+          <div class="mini reveal sheen">
+            <span class="mini__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></span>
+            <h3>Search &amp; filters</h3>
+            <p>Find a title fast, and filter by language and year.</p>
+          </div>
+          <div class="mini reveal sheen">
+            <span class="mini__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>
+            <h3>Several accounts</h3>
+            <p>Add more than one subscription and switch in a tap.</p>
+          </div>
+          <div class="mini reveal sheen">
+            <span class="mini__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+            <h3>From match to play</h3>
+            <p>When a title you swiped is in your library, play it straight from its page.</p>
+          </div>
+          <div class="mini reveal sheen">
+            <span class="mini__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></span>
+            <h3>Take it with you</h3>
+            <p>Download a film or a whole season for the plane, the train or a weekend without Wi-Fi.</p>
+          </div>
+          <div class="mini reveal sheen">
+            <span class="mini__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+            <h3>Safe for the kids</h3>
+            <p>A 4-digit parental code keeps grown-up titles out of sight everywhere in Flix.</p>
+          </div>
+          <div class="mini reveal sheen">
+            <span class="mini__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="13" height="18" rx="2"/><rect x="17" y="8" width="5" height="10" rx="1.5"/><line x1="8.5" y1="18" x2="8.51" y2="18"/></svg></span>
+            <h3>iPhone and iPad in step</h3>
+            <p>Resume points, lists, favourites and reminders follow your account from one device to the other. Your sign-in details never leave your device.</p>
+          </div>
+          <div class="mini reveal sheen">
+            <span class="mini__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"/><rect x="2" y="14" width="20" height="8" rx="2" ry="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg></span>
+            <h3>Your own media server</h3>
+            <p>Jellyfin and Emby work too: sign in once and your films and series are in.</p>
+          </div>
+        </div>
+
+        <p class="note reveal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          <span><b>FlickAlong doesn&rsquo;t sell, host or provide any films, shows or live TV.</b> Flix only plays what your own streaming service gives you access to, with the address and sign-in details it gave you. Those details stay on your device.</span>
+        </p>
+
+        <div class="tv-row">
+          <div class="reveal">
+            <p class="eyebrow">On the big screen</p>
+            <h2 class="h2">Send it to the TV.</h2>
+            <p class="lead-lg">Pick how to watch from the player. Your phone stays the remote.</p>
+            <ul class="checks">
+              <li><span><b>AirPlay.</b> Sound only on a speaker or AirPods, or picture and sound on an Apple TV.</span></li>
+              <li><span><b>Chromecast.</b> Chromecast, Google TV and Android TV on your Wi-Fi.</span></li>
+              <li><span><b>Picture in Picture.</b> Keep watching while you use other apps.</span></li>
+            </ul>
+          </div>
+          <div class="tv-row__media reveal">
+            <figure class="device device--tv" data-shot="tv" role="img" aria-label="A film playing on the TV from FlickAlong, with the player controls and an AirPlay badge">
+              <!-- Drawn with CSS (no photo needed): a film playing full screen, the player bar, and the AirPlay badge. -->
+              <div class="device__screen">
+                <div class="tv-demo" aria-hidden="true">
+                  <div class="tv-demo__film"><span class="tv-demo__moon"></span><span class="tv-demo__sea"></span><span class="tv-demo__boat"></span></div>
+                  <div class="tv-demo__badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2h-1"/><polygon points="12 15 17 21 7 21 12 15"/></svg>Living room TV</div>
+                  <div class="tv-demo__bar">
+                    <span class="tv-demo__title"><b>Midnight Harbour</b><small>1 h 12 left &middot; Drama &middot; 2024</small></span>
+                    <span class="tv-demo__progress"><i></i></span>
+                    <span class="tv-demo__times"><span>0:48:30</span><span>2:00:14</span></span>
+                  </div>
+                </div>
+              </div>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ How it works ============ -->
+    <section class="section" id="how">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">How it works</p>
+          <h2 class="h2">Three steps to movie night.</h2>
+        </div>
+        <ol class="steps">
+          <li class="step reveal sheen">
+            <span class="step__num">1</span>
+            <h3>Link up</h3>
+            <p>Create your account and invite your partner or friends with your code.</p>
+          </li>
+          <li class="step reveal sheen">
+            <span class="step__num">2</span>
+            <h3>Swipe</h3>
+            <p>Right if you&rsquo;d watch it, left if not. Everyone at their own pace.</p>
+          </li>
+          <li class="step reveal sheen">
+            <span class="step__num">3</span>
+            <h3>Match &amp; watch</h3>
+            <p>Open your match: where it streams, cinema times, or play it with Flix.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ Everything ============ -->
+    <section class="section" id="everything">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">All in one app</p>
+          <h2 class="h2">Everything in FlickAlong.</h2>
+        </div>
+        <div class="cards">
+          <article class="card reveal sheen">
+            <span class="card__count">01 / 06</span>
+            <h3>Match together</h3>
+            <p>Partner, best friends and group rooms, every match saved, and titles you can send to a friend.</p>
+            <span class="card__tag">Match</span>
+          </article>
+          <article class="card reveal sheen">
+            <span class="card__count">02 / 06</span>
+            <h3>Decide fast</h3>
+            <p>Watch Tonight, Mutual Roulette, filters and Surprise Me.</p>
+            <span class="card__tag">Decide</span>
+          </article>
+          <article class="card reveal sheen">
+            <span class="card__count">03 / 06</span>
+            <h3>Discover</h3>
+            <p>Shorts, new-release alerts and your library of likes and favourite actors.</p>
+            <span class="card__tag">Discover</span>
+          </article>
+          <article class="card reveal sheen">
+            <span class="card__count">04 / 06</span>
+            <h3>Go out</h3>
+            <p>Films in cinemas near you, with real showtimes.</p>
+            <span class="card__tag">Cinema</span>
+          </article>
+          <article class="card reveal sheen">
+            <span class="card__count">05 / 06</span>
+            <h3>Play with Flix</h3>
+            <p>Your own streaming subscription or media server, organised and ready to play: on your phone, on your TV, or offline.</p>
+            <span class="card__tag">Flix</span>
+          </article>
+          <article class="card reveal sheen">
+            <span class="card__count">06 / 06</span>
+            <h3>Couple Wrapped</h3>
+            <p>Your year in movies, together.</p>
+            <span class="card__tag">Wrapped</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Platforms ============ -->
+    <section class="section" id="platforms">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Every screen</p>
+          <h2 class="h2">Made for the screens you use.</h2>
+        </div>
+        <div class="platforms">
+          <div class="platform reveal sheen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="2.5"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            <div><b>iPhone</b><span>The whole app in your pocket</span></div>
+          </div>
+          <div class="platform reveal sheen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2.5"/><line x1="18" y1="12" x2="18.01" y2="12"/></svg>
+            <div><b>iPad</b><span>Laid out for the bigger screen</span></div>
+          </div>
+          <div class="platform reveal sheen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="9" y1="5" x2="15" y2="5"/></svg>
+            <div><b>Android</b><span>Phones and tablets</span></div>
+          </div>
+          <div class="platform reveal sheen">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 16.1A5 5 0 0 1 5.9 20M2 12.05A9 9 0 0 1 9.95 20M2 8V6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-6"/><line x1="2" y1="20" x2="2.01" y2="20"/></svg>
+            <div><b>Your TV</b><span>AirPlay and Chromecast</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Pricing ============ -->
+    <section class="section" id="pricing">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">Pricing</p>
+          <h2 class="h2">Free to start. Premium for bigger groups.</h2>
+          <p class="lead-lg">Prices are shown in the App Store and Google Play before you buy, and you can cancel anytime from your store account.</p>
+        </div>
+        <div class="plans">
+          <article class="plan reveal sheen">
+            <h3>Free</h3>
+            <p class="plan__sub">Everything you need for movie night</p>
+            <ul class="checks">
+              <li><span>Swipe, matches, Watch Tonight and Mutual Roulette</span></li>
+              <li><span>Where to watch and cinema showtimes</span></li>
+              <li><span>Flix with your own subscription</span></li>
+              <li><span>Group rooms up to 4 people and one best-friend link</span></li>
+            </ul>
+          </article>
+          <article class="plan plan--premium reveal sheen">
+            <h3>Premium <span class="grad">Family &amp; Friends</span></h3>
+            <p class="plan__sub">Monthly, yearly or a one-time purchase</p>
+            <ul class="checks">
+              <li><span>Group rooms up to 7 people when you host</span></li>
+              <li><span>More linked best friends, with nicknames</span></li>
+              <li><span>Unlimited group sessions</span></li>
+              <li><span>Restore your purchase on a new phone</span></li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="section" id="faq">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">FAQ</p>
+          <h2 class="h2">Questions, answered.</h2>
+        </div>
+        <div class="faq">
+          <details class="qa reveal">
+            <summary>Is FlickAlong free?</summary>
+            <div><p>Yes. Swiping, matches, where to watch, cinema showtimes and Flix are free. Premium (Family &amp; Friends) adds bigger group rooms, more best-friend links and unlimited group sessions.</p></div>
+          </details>
+          <details class="qa reveal">
+            <summary>How do we match?</summary>
+            <div><p>Link with your partner or a best friend with an invite code from your profile, or open a group room. Swipe on your own phones: when everyone likes the same title, it appears in Matches.</p></div>
+          </details>
+          <details class="qa reveal">
+            <summary>What is Flix? Does FlickAlong provide films or TV?</summary>
+            <div><p>No. FlickAlong doesn&rsquo;t sell, host or provide any content. Flix is an optional player for a streaming service you already subscribe to: you enter the address and sign-in details it gave you (Profile &rarr; Streaming account), and they stay on your device.</p></div>
+          </details>
+          <details class="qa reveal">
+            <summary>Can I watch on my TV?</summary>
+            <div><p>Yes, from the player: AirPlay (sound only, or picture and sound on an Apple TV or AirPlay TV), Chromecast, or screen mirroring on Android.</p></div>
+          </details>
+          <details class="qa reveal">
+            <summary>Can I use it with my kids?</summary>
+            <div><p>Yes. Suggestions respect the age in your profile, and in Flix a 4-digit parental code keeps grown-up titles out of sight everywhere: lists, search, live TV and favourites.</p></div>
+          </details>
+          <details class="qa reveal">
+            <summary>Does it work on both my iPhone and my iPad?</summary>
+            <div><p>Yes. Sign in on both and your resume points, lists, favourites and reminders follow your account. Your streaming sign-in details never leave your device, so you add them once on each.</p></div>
+          </details>
+          <details class="qa reveal">
+            <summary>Can I watch offline?</summary>
+            <div><p>Yes, with Flix: download a film or a whole season and watch it without a connection.</p></div>
+          </details>
+          <details class="qa reveal">
+            <summary>Which languages is the app in?</summary>
+            <div><p>English and French. It follows your phone&rsquo;s language.</p></div>
+          </details>
+          <details class="qa reveal">
+            <summary>Where do cinema showtimes come from?</summary>
+            <div><p>From cinema listings in your country. Allow location access to see the closest cinemas, or set your country in your profile.</p></div>
+          </details>
+          <details class="qa reveal">
+            <summary>What data do you collect?</summary>
+            <div><p>What the app needs to work: your account, your links and your matches. Sharing usage data to help us improve is optional: you choose at first launch and can change it anytime in Profile. Everything is explained in our <a href="privacy.html">Privacy Policy</a>.</p></div>
+          </details>
+          <details class="qa reveal">
+            <summary>How do I delete my account?</summary>
+            <div><p>In the app: Profile &rarr; Delete account. More details on the <a href="delete-account.html">Delete Account</a> page.</p></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ Closing call to action ============ -->
+    <section class="section">
+      <div class="wrap">
+        <div class="cta-band reveal">
+          <h2 class="h2">Make tonight a match.</h2>
+          <p>Swipe together, match in seconds, and press play.</p>
+          <div class="store-row">
+            <span class="store-btn is-soon" aria-label="App Store, for iPhone and iPad: coming soon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2.5"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+              <span><small>iPhone &amp; iPad</small><b>App Store <span class="soon">Soon</span></b></span>
+            </span>
+            <span class="store-btn store-btn--ghost is-soon" aria-label="Google Play, for Android: coming soon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span><small>Android</small><b>Google Play <span class="soon">Soon</span></b></span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <button type="button" class="motion-toggle" aria-pressed="false" id="motion-toggle">
+    <svg class="is-playing" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+    <svg class="is-paused" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="7 4 19 12 7 20 7 4"/></svg>
+    <span class="is-playing">Pause animations</span><span class="is-paused">Play animations</span>
+  </button>
+
+  <footer class="site-footer footer--home">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <img src="logo.svg" alt="FlickAlong" />
+          <p>Movie night, sorted together.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <a href="#features">Features</a>
+          <a href="#flix">Flix</a>
+          <a href="#how">How it works</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="footer-col">
+          <h4>Help</h4>
+          <a href="support.html">Support</a>
+          <a href="delete-account.html">Delete Account</a>
+          <a href="mailto:info@digi4all.ai">info@digi4all.ai</a>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <a href="privacy.html">Privacy Policy</a>
+          <a href="terms.html">Terms of Service</a>
+        </div>
+      </div>
+      <div class="footer-legal">
+        <p>Film and series data provided by TMDB. This product uses the TMDB API but is not endorsed or certified by TMDB. Showtimes provided by MovieGlu.</p>
+        <p>FlickAlong doesn&rsquo;t provide any streaming content. Flix plays content from a service you subscribe to yourself.</p>
+        <p>&copy; 2026 FlickAlong</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // "Pause animations": stops every animation of the page (same rules as "reduce motion") and remembers it.
+    (function () {
+      var btn = document.getElementById('motion-toggle');
+      var root = document.documentElement;
+      var sync = function () { btn.setAttribute('aria-pressed', root.classList.contains('no-motion') ? 'true' : 'false'); };
+      sync();
+      btn.addEventListener('click', function () {
+        root.classList.toggle('no-motion');
+        sync();
+        try { localStorage.setItem('flickalong.motion', root.classList.contains('no-motion') ? 'off' : 'on'); } catch (e) {}
+      });
+    })();
+
+    // Hero parallax: the iPad, iPhone and bubbles drift a little with the mouse and with the scroll
+    // (mouse only with a real pointer; nothing at all with "reduce motion").
+    (function () {
+      var stage = document.querySelector('.hero__stage');
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!stage || reduce || !('requestAnimationFrame' in window)) return;
+      var still = function () { return document.documentElement.classList.contains('no-motion'); };
+      var fine = window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      var tx = 0, ty = 0, cx = 0, cy = 0, sy = 0, raf = 0;
+      function tick() {
+        raf = 0;
+        cx += (tx - cx) * 0.08;
+        cy += (ty - cy) * 0.08;
+        stage.style.setProperty('--px', cx.toFixed(3));
+        stage.style.setProperty('--py', cy.toFixed(3));
+        stage.style.setProperty('--sy', sy.toFixed(1));
+        if (Math.abs(tx - cx) > 0.002 || Math.abs(ty - cy) > 0.002) raf = requestAnimationFrame(tick);
+      }
+      function ask() { if (!raf) raf = requestAnimationFrame(tick); }
+      if (fine) {
+        var hero = document.querySelector('.hero');
+        hero.addEventListener('pointermove', function (e) {
+          if (still()) return;
+          var r = hero.getBoundingClientRect();
+          tx = ((e.clientX - r.left) / r.width - 0.5) * 2;
+          ty = ((e.clientY - r.top) / r.height - 0.5) * 2;
+          ask();
+        });
+        hero.addEventListener('pointerleave', function () { tx = 0; ty = 0; ask(); });
+      }
+      window.addEventListener('scroll', function () {
+        if (still()) return;
+        sy = Math.min(window.scrollY, 900) * 0.06;
+        ask();
+      }, { passive: true });
+    })();
+
+    // Cards catch the light: a soft sheen follows the pointer over a card (real pointers only).
+    (function () {
+      if (!(window.matchMedia && window.matchMedia('(hover: hover) and (pointer: fine)').matches)) return;
+      document.addEventListener('pointermove', function (e) {
+        var card = e.target.closest && e.target.closest('.sheen');
+        if (!card || document.documentElement.classList.contains('no-motion')) return;
+        var r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+        card.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+      }, { passive: true });
+    })();
+
+    // Sections fade in as they scroll into view (everything shows at once without this script,
+    // with "reduce motion" switched on, or in browsers without IntersectionObserver).
+    // Items of a grid (steps, cards, plans…) appear one after another: each gets its rank in --i.
+    (function () {
+      var items = document.querySelectorAll('.reveal');
+      var groups = document.querySelectorAll('.stats, .mini-grid, .steps, .cards, .platforms, .plans, .faq, .phone-pair');
+      for (var g = 0; g < groups.length; g++) {
+        var kids = groups[g].children;
+        for (var k = 0; k < kids.length; k++) kids[k].style.setProperty('--i', k);
+      }
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce || !('IntersectionObserver' in window)) {
+        for (var i = 0; i < items.length; i++) items[i].classList.add('in');
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+      for (var j = 0; j < items.length; j++) io.observe(items[j]);
+    })();
+  </script>
+</body>
+</html>

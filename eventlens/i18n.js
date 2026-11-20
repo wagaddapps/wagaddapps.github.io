@@ -1,0 +1,363 @@
+// Traduction du site, alignée sur l'application.
+//
+// Mêmes 7 langues et mêmes codes que app/src/i18n.tsx : un invité qui arrive par
+// le QR code doit trouver le site dans la langue où il trouvera l'app. C'est
+// pour ces publics que l'app parle tagalog, hindi et arabe.
+//
+// Choix de la langue : préférence enregistrée, sinon la langue du navigateur,
+// sinon le français. L'arabe bascule la page en écriture droite-à-gauche.
+(function () {
+  var LANGS = [
+    { code: 'en', flag: '🇬🇧', label: 'English' },
+    { code: 'fr', flag: '🇫🇷', label: 'Français' },
+    { code: 'nl', flag: '🇳🇱', label: 'Nederlands' },
+    { code: 'ar', flag: '🇰🇼', label: 'العربية' },
+    { code: 'tl', flag: '🇵🇭', label: 'Tagalog' },
+    { code: 'es', flag: '🇪🇸', label: 'Español' },
+    { code: 'hi', flag: '🇮🇳', label: 'हिन्दी' }
+  ];
+
+  var T = {
+    fr: {
+      'tagline': "Partagez l'instant, en direct.",
+      'join.title': "Rejoindre l'événement",
+      'join.code': "Code de l'événement (6 caractères)",
+      'join.pseudo': "Votre pseudo (facultatif)",
+      'join.pseudoPh': "Ex. Tante Leïla",
+      'join.cta': "Rejoindre",
+      'join.in': "Vous participez à cet événement 🎉",
+      'join.room': "Choisissez votre salle",
+      'join.tapHere': "Touchez ici",
+      'join.tapRest': "pour choisir vos photos et vidéos",
+      'join.drop': "ou déposez-les dans cette zone",
+      'join.limits': "Photos illimitées en taille (recompressées) · vidéos : 30 s et 60 Mo max",
+      'join.caption': "Légende (facultative, appliquée à la première photo)",
+      'join.captionPh': "Un petit mot avec vos photos…",
+      'join.more': "← En savoir plus sur EventLens",
+      'join.or': "ou",
+      'join.openApp': "Ouvrir dans l'application EventLens",
+      'join.appHint': "L'application ajoute la reconnaissance de vos photos par selfie et la galerie complète. Le web suffit pour envoyer.",
+      'join.appMissing': "L'application n'est pas installée sur cet appareil. Continuez ici, c'est prévu pour.",
+      'join.keepTitle': "Gardez vos photos avec vous",
+      'join.keepBody': "L'application EventLens vous laisse revoir toutes les photos de l'événement, retrouver celles où vous apparaissez et supprimer les vôtres.",
+      'join.keepCta': "Obtenir l'application",
+      'join.keepLearn': "En savoir plus sur l'application",
+      'join.sentOk': "Vos photos sont envoyées ! Elles apparaîtront après modération.",
+      'join.sentFailed': "{n} fichier(s) n'ont pas pu être envoyés.",
+      'join.sentNone': "Aucun fichier n'a pu être envoyé. Réessayez.",
+      'join.acctTitle': "Gardez vos photos",
+      'join.acctBody': "Sans compte, cet envoi n'est rattaché qu'à ce navigateur. Un compte vous permet de retrouver vos photos depuis l'application, et de les supprimer.",
+      'join.acctEmailPh': "vous@exemple.com",
+      'join.acctPassPh': "Mot de passe (8 caractères min.)",
+      'join.acctCta': "Créer mon compte",
+      'join.acctInvalid': "Entrez un e-mail et un mot de passe d'au moins 8 caractères.",
+      'join.acctDone': "Compte créé. Vos photos y sont désormais rattachées.",
+      'join.acctFailed': "Création impossible :"
+    },
+    en: {
+      'tagline': "Share the moment, live.",
+      'join.title': "Join the event",
+      'join.code': "Event code (6 characters)",
+      'join.pseudo': "Your nickname (optional)",
+      'join.pseudoPh': "e.g. Aunt Leila",
+      'join.cta': "Join",
+      'join.in': "You're in this event 🎉",
+      'join.room': "Choose your room",
+      'join.tapHere': "Tap here",
+      'join.tapRest': "to choose your photos and videos",
+      'join.drop': "or drop them in this area",
+      'join.limits': "Unlimited photo size (recompressed) · videos: 30 s and 60 MB max",
+      'join.caption': "Caption (optional, applied to the first photo)",
+      'join.captionPh': "A few words with your photos…",
+      'join.more': "← Learn more about EventLens",
+      'join.or': "or",
+      'join.openApp': "Open in the EventLens app",
+      'join.appHint': "The app adds selfie matching and the full gallery. The web is enough to send photos.",
+      'join.appMissing': "The app isn't installed on this device. Carry on here — that's what it's for.",
+      'join.keepTitle': "Keep your photos with you",
+      'join.keepBody': "The EventLens app lets you browse every photo of the event, find the ones you appear in, and delete your own.",
+      'join.keepCta': "Get the app",
+      'join.keepLearn': "Learn more about the app",
+      'join.sentOk': "Your photos are on their way! They will appear after moderation.",
+      'join.sentFailed': "{n} file(s) could not be sent.",
+      'join.sentNone': "No file could be sent. Please try again.",
+      'join.acctTitle': "Keep your photos",
+      'join.acctBody': "Without an account this upload is tied to this browser only. An account lets you find your photos from the app, and delete them.",
+      'join.acctEmailPh': "you@example.com",
+      'join.acctPassPh': "Password (8 characters min.)",
+      'join.acctCta': "Create my account",
+      'join.acctInvalid': "Enter an email and a password of at least 8 characters.",
+      'join.acctDone': "Account created. Your photos are now attached to it.",
+      'join.acctFailed': "Could not create the account:"
+    },
+    nl: {
+      'tagline': "Deel het moment, live.",
+      'join.title': "Deelnemen aan het evenement",
+      'join.code': "Evenementcode (6 tekens)",
+      'join.pseudo': "Je bijnaam (optioneel)",
+      'join.pseudoPh': "Bv. Tante Leila",
+      'join.cta': "Deelnemen",
+      'join.in': "Je doet mee aan dit evenement 🎉",
+      'join.room': "Kies je zaal",
+      'join.tapHere': "Tik hier",
+      'join.tapRest': "om je foto's en video's te kiezen",
+      'join.drop': "of sleep ze naar dit vak",
+      'join.limits': "Onbeperkte fotogrootte (gecomprimeerd) · video's: max. 30 s en 60 MB",
+      'join.caption': "Tekst (optioneel, bij de eerste foto)",
+      'join.captionPh': "Een woordje bij je foto's…",
+      'join.more': "← Meer over EventLens",
+      'join.or': "of",
+      'join.openApp': "Openen in de EventLens-app",
+      'join.appHint': "De app voegt selfieherkenning en de volledige galerij toe. Het web volstaat om te versturen.",
+      'join.appMissing': "De app staat niet op dit toestel. Ga hier verder — daar is het voor.",
+      'join.keepTitle': "Houd je foto's bij je",
+      'join.keepBody': "Met de EventLens-app bekijk je alle foto's van het evenement, vind je de foto's waarop je staat en verwijder je je eigen foto's.",
+      'join.keepCta': "Download de app",
+      'join.keepLearn': "Meer over de app",
+      'join.sentOk': "Je foto's zijn verstuurd! Ze verschijnen na moderatie.",
+      'join.sentFailed': "{n} bestand(en) konden niet worden verstuurd.",
+      'join.sentNone': "Geen enkel bestand kon worden verstuurd. Probeer opnieuw.",
+      'join.acctTitle': "Bewaar je foto's",
+      'join.acctBody': "Zonder account is deze upload alleen aan deze browser gekoppeld. Met een account vind je je foto's terug in de app en kun je ze verwijderen.",
+      'join.acctEmailPh': "jij@voorbeeld.com",
+      'join.acctPassPh': "Wachtwoord (min. 8 tekens)",
+      'join.acctCta': "Account aanmaken",
+      'join.acctInvalid': "Voer een e-mailadres en een wachtwoord van minstens 8 tekens in.",
+      'join.acctDone': "Account aangemaakt. Je foto's zijn er nu aan gekoppeld.",
+      'join.acctFailed': "Aanmaken mislukt:"
+    },
+    ar: {
+      'tagline': "شارك اللحظة، مباشرةً.",
+      'join.title': "الانضمام إلى المناسبة",
+      'join.code': "رمز المناسبة (٦ أحرف)",
+      'join.pseudo': "اسمك المستعار (اختياري)",
+      'join.pseudoPh': "مثال: خالتي ليلى",
+      'join.cta': "انضم",
+      'join.in': "أنت مشارك في هذه المناسبة 🎉",
+      'join.room': "اختر القاعة",
+      'join.tapHere': "اضغط هنا",
+      'join.tapRest': "لاختيار صورك ومقاطعك",
+      'join.drop': "أو أفلتها في هذه المنطقة",
+      'join.limits': "حجم الصور غير محدود (يُعاد ضغطها) · الفيديو: ٣٠ ثانية و٦٠ ميغابايت كحد أقصى",
+      'join.caption': "تعليق (اختياري، يُضاف إلى الصورة الأولى)",
+      'join.captionPh': "كلمة مع صورك…",
+      'join.more': "← اعرف المزيد عن EventLens",
+      'join.or': "أو",
+      'join.openApp': "الفتح في تطبيق EventLens",
+      'join.appHint': "يضيف التطبيق التعرّف على صورك بالسيلفي والمعرض الكامل. والويب يكفي للإرسال.",
+      'join.appMissing': "التطبيق غير مثبّت على هذا الجهاز. تابع من هنا، فهذه الصفحة مُعدّة لذلك.",
+      'join.keepTitle': "احتفظ بصورك معك",
+      'join.keepBody': "يتيح لك تطبيق EventLens تصفّح كل صور المناسبة، والعثور على الصور التي تظهر فيها، وحذف صورك.",
+      'join.keepCta': "تنزيل التطبيق",
+      'join.keepLearn': "اعرف المزيد عن التطبيق",
+      'join.sentOk': "تم إرسال صورك! ستظهر بعد المراجعة.",
+      'join.sentFailed': "تعذّر إرسال {n} من الملفات.",
+      'join.sentNone': "تعذّر إرسال أي ملف. حاول مرة أخرى.",
+      'join.acctTitle': "احتفظ بصورك",
+      'join.acctBody': "بدون حساب، يرتبط هذا الإرسال بهذا المتصفح فقط. الحساب يتيح لك إيجاد صورك من التطبيق وحذفها.",
+      'join.acctEmailPh': "you@example.com",
+      'join.acctPassPh': "كلمة المرور (٨ أحرف على الأقل)",
+      'join.acctCta': "إنشاء حسابي",
+      'join.acctInvalid': "أدخل بريدًا إلكترونيًا وكلمة مرور من ٨ أحرف على الأقل.",
+      'join.acctDone': "تم إنشاء الحساب. صورك مرتبطة به الآن.",
+      'join.acctFailed': "تعذّر إنشاء الحساب:"
+    },
+    tl: {
+      'tagline': "Ibahagi ang sandali, live.",
+      'join.title': "Sumali sa event",
+      'join.code': "Code ng event (6 na karakter)",
+      'join.pseudo': "Palayaw mo (opsyonal)",
+      'join.pseudoPh': "Hal. Tita Leila",
+      'join.cta': "Sumali",
+      'join.in': "Kasali ka sa event na ito 🎉",
+      'join.room': "Piliin ang inyong silid",
+      'join.tapHere': "Pindutin dito",
+      'join.tapRest': "para piliin ang mga litrato at video",
+      'join.drop': "o i-drop sila sa bahaging ito",
+      'join.limits': "Walang limitasyon sa laki ng litrato (kinokompress) · video: 30 s at 60 MB max",
+      'join.caption': "Caption (opsyonal, para sa unang litrato)",
+      'join.captionPh': "Isang mensahe kasama ang litrato…",
+      'join.more': "← Alamin pa ang EventLens",
+      'join.or': "o",
+      'join.openApp': "Buksan sa EventLens app",
+      'join.appHint': "Nagdadagdag ang app ng selfie matching at buong gallery. Sapat na ang web para magpadala.",
+      'join.appMissing': "Wala ang app sa device na ito. Magpatuloy dito — para diyan ito.",
+      'join.keepTitle': "Dalhin ang iyong mga larawan",
+      'join.keepBody': "Sa EventLens app, makikita mo ang lahat ng larawan ng kaganapan, mahahanap ang mga kinalalabasan mo, at mabubura ang sarili mong mga larawan.",
+      'join.keepCta': "Kunin ang app",
+      'join.keepLearn': "Alamin ang tungkol sa app",
+      'join.sentOk': "Naipadala na ang mga larawan mo! Lalabas ang mga ito pagkatapos ng moderation.",
+      'join.sentFailed': "Hindi naipadala ang {n} file.",
+      'join.sentNone': "Walang naipadalang file. Subukan muli.",
+      'join.acctTitle': "Itago ang iyong mga larawan",
+      'join.acctBody': "Kung walang account, nakatali lang ang upload na ito sa browser na ito. Sa account, makikita mo ang mga larawan mo sa app at mabubura mo ang mga ito.",
+      'join.acctEmailPh': "ikaw@halimbawa.com",
+      'join.acctPassPh': "Password (8 karakter pataas)",
+      'join.acctCta': "Gumawa ng account",
+      'join.acctInvalid': "Maglagay ng email at password na may hindi bababa sa 8 karakter.",
+      'join.acctDone': "Nagawa ang account. Nakakabit na rito ang mga larawan mo.",
+      'join.acctFailed': "Hindi nagawa ang account:"
+    },
+    es: {
+      'tagline': "Comparte el momento, en directo.",
+      'join.title': "Unirse al evento",
+      'join.code': "Código del evento (6 caracteres)",
+      'join.pseudo': "Tu apodo (opcional)",
+      'join.pseudoPh': "Ej. Tía Leila",
+      'join.cta': "Unirse",
+      'join.in': "Ya participas en este evento 🎉",
+      'join.room': "Elige tu sala",
+      'join.tapHere': "Toca aquí",
+      'join.tapRest': "para elegir tus fotos y vídeos",
+      'join.drop': "o suéltalos en esta zona",
+      'join.limits': "Tamaño de fotos sin límite (se recomprimen) · vídeos: 30 s y 60 MB máx.",
+      'join.caption': "Texto (opcional, en la primera foto)",
+      'join.captionPh': "Unas palabras con tus fotos…",
+      'join.more': "← Más sobre EventLens",
+      'join.or': "o",
+      'join.openApp': "Abrir en la aplicación EventLens",
+      'join.appHint': "La aplicación añade el reconocimiento por selfie y la galería completa. La web basta para enviar.",
+      'join.appMissing': "La aplicación no está instalada en este dispositivo. Sigue aquí, para eso está.",
+      'join.keepTitle': "Llévate tus fotos",
+      'join.keepBody': "La aplicación EventLens te permite ver todas las fotos del evento, encontrar aquellas en las que apareces y eliminar las tuyas.",
+      'join.keepCta': "Obtener la aplicación",
+      'join.keepLearn': "Más información sobre la aplicación",
+      'join.sentOk': "¡Tus fotos se han enviado! Aparecerán tras la moderación.",
+      'join.sentFailed': "No se pudieron enviar {n} archivo(s).",
+      'join.sentNone': "No se pudo enviar ningún archivo. Inténtalo de nuevo.",
+      'join.acctTitle': "Guarda tus fotos",
+      'join.acctBody': "Sin cuenta, este envío solo queda ligado a este navegador. Una cuenta te permite encontrar tus fotos desde la aplicación y eliminarlas.",
+      'join.acctEmailPh': "tu@ejemplo.com",
+      'join.acctPassPh': "Contraseña (mín. 8 caracteres)",
+      'join.acctCta': "Crear mi cuenta",
+      'join.acctInvalid': "Introduce un correo y una contraseña de al menos 8 caracteres.",
+      'join.acctDone': "Cuenta creada. Tus fotos ya están vinculadas a ella.",
+      'join.acctFailed': "No se pudo crear la cuenta:"
+    },
+    hi: {
+      'tagline': "पल को साझा करें, लाइव।",
+      'join.title': "इवेंट में शामिल हों",
+      'join.code': "इवेंट कोड (6 अक्षर)",
+      'join.pseudo': "आपका उपनाम (वैकल्पिक)",
+      'join.pseudoPh': "जैसे लीला आंटी",
+      'join.cta': "शामिल हों",
+      'join.in': "आप इस इवेंट में शामिल हैं 🎉",
+      'join.room': "अपना कक्ष चुनें",
+      'join.tapHere': "यहाँ टैप करें",
+      'join.tapRest': "अपनी फ़ोटो और वीडियो चुनने के लिए",
+      'join.drop': "या उन्हें इस क्षेत्र में छोड़ें",
+      'join.limits': "फ़ोटो का आकार असीमित (पुनः संपीड़ित) · वीडियो: 30 स., 60 MB तक",
+      'join.caption': "कैप्शन (वैकल्पिक, पहली फ़ोटो पर)",
+      'join.captionPh': "आपकी फ़ोटो के साथ कुछ शब्द…",
+      'join.more': "← EventLens के बारे में और जानें",
+      'join.or': "या",
+      'join.openApp': "EventLens ऐप में खोलें",
+      'join.appHint': "ऐप सेल्फ़ी से फ़ोटो पहचानना और पूरी गैलरी जोड़ता है। भेजने के लिए वेब ही काफ़ी है।",
+      'join.appMissing': "इस डिवाइस पर ऐप नहीं है। यहीं जारी रखें — यह उसी के लिए है।",
+      'join.keepTitle': "अपनी तस्वीरें साथ रखें",
+      'join.keepBody': "EventLens ऐप से आप कार्यक्रम की सभी तस्वीरें देख सकते हैं, जिनमें आप हैं उन्हें ढूँढ सकते हैं, और अपनी तस्वीरें हटा सकते हैं।",
+      'join.keepCta': "ऐप पाएँ",
+      'join.keepLearn': "ऐप के बारे में और जानें",
+      'join.sentOk': "आपकी तस्वीरें भेज दी गईं! मॉडरेशन के बाद दिखाई देंगी।",
+      'join.sentFailed': "{n} फ़ाइल(ें) नहीं भेजी जा सकीं।",
+      'join.sentNone': "कोई फ़ाइल नहीं भेजी जा सकी। दोबारा कोशिश करें।",
+      'join.acctTitle': "अपनी तस्वीरें सुरक्षित रखें",
+      'join.acctBody': "बिना खाते के यह भेजी गई तस्वीरें सिर्फ़ इसी ब्राउज़र से जुड़ी रहती हैं। खाता होने पर आप उन्हें ऐप में पा सकते हैं और हटा भी सकते हैं।",
+      'join.acctEmailPh': "aap@udaharan.com",
+      'join.acctPassPh': "पासवर्ड (कम से कम 8 अक्षर)",
+      'join.acctCta': "खाता बनाएँ",
+      'join.acctInvalid': "ईमेल और कम से कम 8 अक्षरों का पासवर्ड डालें।",
+      'join.acctDone': "खाता बन गया। आपकी तस्वीरें अब इससे जुड़ी हैं।",
+      'join.acctFailed': "खाता नहीं बन सका:"
+    }
+  };
+
+  // Chaque page enregistre son dictionnaire : join.html ne charge pas le
+  // marketing, ce qui compte pour des invités sur un Wi-Fi saturé.
+  function register(extra) {
+    Object.keys(extra).forEach(function (code) {
+      T[code] = T[code] || {};
+      var d = extra[code];
+      Object.keys(d).forEach(function (k) { T[code][k] = d[k]; });
+    });
+    if (mounted) apply(current);
+  }
+
+  var mounted = false;
+  var current = 'fr';
+  var onChange = [];
+
+  function pick() {
+    try {
+      var saved = localStorage.getItem('el_lang');
+      if (saved && T[saved]) return saved;
+    } catch (e) { /* navigation privée : on retombe sur le navigateur */ }
+    var nav = (navigator.language || 'fr').slice(0, 2).toLowerCase();
+    return T[nav] ? nav : 'fr';
+  }
+
+  function apply(lang) {
+    current = lang;
+    var d = T[lang] || T.fr;
+    document.documentElement.setAttribute('lang', lang);
+    document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    Array.prototype.forEach.call(document.querySelectorAll('[data-i18n]'), function (el) {
+      var v = d[el.getAttribute('data-i18n')];
+      if (v) el.textContent = v;
+    });
+    // Phrases dont le découpage en balises fait partie du sens : on remplace le
+    // contenu entier, sinon l'ordre des mots serait figé sur le français — ce qui
+    // donne du charabia en arabe et en hindi. Valeurs statiques, jamais de saisie.
+    Array.prototype.forEach.call(document.querySelectorAll('[data-i18n-html]'), function (el) {
+      var v = d[el.getAttribute('data-i18n-html')];
+      if (v) el.innerHTML = v;
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-i18n-ph]'), function (el) {
+      var v = d[el.getAttribute('data-i18n-ph')];
+      if (v) el.setAttribute('placeholder', v);
+    });
+    Array.prototype.forEach.call(document.querySelectorAll('[data-i18n-switcher] [data-lang]'), function (b) {
+      b.setAttribute('aria-pressed', String(b.getAttribute('data-lang') === lang));
+    });
+    onChange.forEach(function (cb) { try { cb(lang); } catch (e) {} });
+  }
+
+  function mount() {
+    var host = document.querySelector('[data-i18n-switcher]');
+    if (host && !host.children.length) {
+      LANGS.forEach(function (l) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.setAttribute('data-lang', l.code);
+        b.setAttribute('aria-label', l.label);
+        b.textContent = l.flag;
+        b.addEventListener('click', function () {
+          try { localStorage.setItem('el_lang', l.code); } catch (e) {}
+          apply(l.code);
+        });
+        host.appendChild(b);
+      });
+    }
+    mounted = true;
+    apply(pick());
+  }
+
+  // Accès depuis le JavaScript d'une page, pour les messages qui n'existent pas
+  // dans le HTML (erreurs de connexion, états transitoires).
+  function t(key) {
+    var d = T[current] || T.fr;
+    return d[key] || (T.fr && T.fr[key]) || key;
+  }
+
+  window.ELI18N = {
+    register: register,
+    apply: function () { apply(pick()); },
+    onChange: function (cb) { onChange.push(cb); },
+    t: t,
+    lang: function () { return current; },
+    langs: LANGS
+  };
+
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount);
+  else mount();
+})();

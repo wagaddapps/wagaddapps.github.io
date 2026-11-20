@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Add a playlist — FlickAlong</title>
+  <meta name="description" content="Add your own playlist to FlickAlong on a TV, tablet or phone by typing it here." />
+  <meta name="robots" content="noindex" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .act-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; margin: 18px 0; }
+    .act-card h2 { margin: 0 0 6px; font-size: 1.15rem; }
+    .act-field { display: block; margin-top: 14px; }
+    .act-field span { display: block; font-size: 0.85rem; color: var(--muted); margin-bottom: 6px; }
+    .act-field input { width: 100%; padding: 12px 14px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); font: inherit; }
+    .act-field input:focus-visible { outline: 2px solid var(--primary); outline-offset: 1px; }
+    .act-code { text-transform: uppercase; letter-spacing: 0.08em; font-variant-numeric: tabular-nums; }
+    .act-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 560px) { .act-row { grid-template-columns: 1fr; } }
+    .act-btn { margin-top: 18px; padding: 12px 22px; border: 0; border-radius: 12px; background: var(--primary); color: var(--on-primary); font: inherit; font-weight: 700; cursor: pointer; }
+    .act-btn:hover { background: var(--primary-strong); }
+    .act-btn[disabled] { opacity: 0.55; cursor: default; }
+    .act-link { background: none; border: 0; padding: 0; color: var(--primary); font: inherit; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+    .act-types { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+    .act-types label { flex: 1 1 160px; display: flex; align-items: center; gap: 8px; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); cursor: pointer; }
+    .act-types input { accent-color: var(--primary); }
+    .act-msg { margin: 14px 0 0; min-height: 1.5em; }
+    .act-msg.ok { color: var(--like); }
+    .act-msg.bad { color: var(--nope); }
+    .act-list { list-style: none; margin: 12px 0 0; padding: 0; }
+    .act-list li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-top: 1px solid var(--line); }
+    .act-list li:first-child { border-top: 0; }
+    .act-list strong { color: var(--text); overflow-wrap: anywhere; }
+    .act-list small { display: block; color: var(--muted); overflow-wrap: anywhere; }
+    .act-note { font-size: 0.85rem; color: var(--muted); }
+    [hidden] { display: none !important; }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="index.html" class="brand"><img src="logo.svg" alt="FlickAlong" style="height:38px;display:block"/></a>
+    <nav class="nav">
+      <a href="support.html">Support</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+    </nav>
+  </header>
+
+  <main class="container page">
+    <h1>Add a playlist to your device</h1>
+    <p class="lead">Type it here instead of on your TV remote.</p>
+    <p>In FlickAlong, open <strong>Flix &rarr; Playlists &rarr; Add a playlist from the web</strong>. The app shows a MAC address and a device key: enter them below, then add your own playlist. Keep that screen open: the playlist arrives within a few seconds.</p>
+
+    <!-- Step 1: which device -->
+    <section class="act-card" id="step-device" aria-labelledby="device-title">
+      <h2 id="device-title">1. Your device</h2>
+      <form id="device-form" novalidate>
+        <div class="act-row">
+          <label class="act-field"><span>MAC address shown by the app</span>
+            <input id="mac" class="act-code" name="mac" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="00:1A:79:AB:CD:EF" maxlength="17" required />
+          </label>
+          <label class="act-field"><span>Device key shown by the app</span>
+            <input id="key" class="act-code" name="key" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABC234" maxlength="8" required />
+          </label>
+        </div>
+        <button class="act-btn" id="device-submit" type="submit">Continue</button>
+        <p class="act-msg" id="device-msg" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <!-- Step 2: playlists of that device -->
+    <section class="act-card" id="step-playlists" aria-labelledby="playlists-title" hidden>
+      <h2 id="playlists-title">2. Playlists for <span id="device-name" class="act-code"></span></h2>
+      <p class="act-note"><button class="act-link" id="change-device" type="button">Use another device</button></p>
+      <ul class="act-list" id="playlist-list" aria-label="Playlists added for this device"></ul>
+      <p class="act-note" id="playlist-empty">No playlist added from the web yet.</p>
+    </section>
+
+    <section class="act-card" id="step-add" aria-labelledby="add-title" hidden>
+      <h2 id="add-title">3. Add a playlist</h2>
+      <form id="add-form" novalidate>
+        <div class="act-types" role="radiogroup" aria-label="Playlist type">
+          <label><input type="radio" name="kind" value="xtream" checked /> Xtream codes</label>
+          <label><input type="radio" name="kind" value="m3u" /> M3U link</label>
+        </div>
+        <label class="act-field"><span>Name (optional)</span>
+          <input id="pl-name" name="name" autocomplete="off" maxlength="40" placeholder="e.g. Home" />
+        </label>
+        <div id="fields-xtream">
+          <label class="act-field"><span>Server address</span>
+            <input id="pl-server" name="server" type="url" inputmode="url" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="http://example.com:8080" />
+          </label>
+          <div class="act-row">
+            <label class="act-field"><span>Username</span>
+              <input id="pl-user" name="username" autocomplete="off" autocapitalize="none" spellcheck="false" />
+            </label>
+            <label class="act-field"><span>Password</span>
+              <input id="pl-pass" name="password" type="password" autocomplete="off" />
+            </label>
+          </div>
+        </div>
+        <div id="fields-m3u" hidden>
+          <label class="act-field"><span>M3U link</span>
+            <input id="pl-url" name="url" type="url" inputmode="url" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="http://example.com/playlist.m3u" />
+          </label>
+        </div>
+        <button class="act-btn" id="add-submit" type="submit">Add playlist</button>
+        <p class="act-msg" id="add-msg" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <p class="act-note">FlickAlong does not provide any account, channel or content: you add a service you subscribe to yourself, and you are responsible for having the right to use it. A playlist added on this page (server address, username, password or link) is kept on our servers under your device&rsquo;s MAC address so the device can fetch it, until you remove it here; it is also deleted if the device has not been used for six months. See our <a href="privacy.html">Privacy Policy</a>.</p>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <a href="privacy.html">Privacy Policy</a>
+      <a href="terms.html">Terms of Service</a>
+      <a href="support.html">Support</a>
+      <a href="delete-account.html">Delete Account</a>
+    </div>
+    <p>&copy; 2026 FlickAlong &middot; <a href="mailto:info@digi4all.ai">info@digi4all.ai</a></p>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+      // The Supabase function behind this page (supabase/functions/device-playlists). Same project as the app.
+      var ENDPOINT = 'https://xkacdvxyhevsqyzriopx.supabase.co/functions/v1/device-playlists';
+      var $ = function (id) { return document.getElementById(id); };
+      var device = null; // { mac, key } once accepted
+
+      function normalizeMac(value) {
+        var hex = String(value || '').replace(/[\s:.\-]/g, '').toUpperCase();
+        return /^[0-9A-F]{12}$/.test(hex) ? hex.match(/.{2}/g).join(':') : null;
+      }
+      function normalizeKey(value) {
+        var key = String(value || '').toUpperCase().replace(/[\s-]/g, '');
+        return /^[A-Z0-9]{6}$/.test(key) ? key : null;
+      }
+      function say(el, text, tone) {
+        el.textContent = text || '';
+        el.className = 'act-msg' + (tone ? ' ' + tone : '');
+      }
+      function call(body) {
+        return fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+          .then(function (res) {
+            return res.json().catch(function () { return null; }).then(function (data) { return { status: res.status, data: data || {} }; });
+          });
+      }
+      function problem(res) {
+        if (res.status === 404) return 'Unknown MAC address or wrong device key. Check both on the “Add from the web” screen of the app.';
+        if (res.status === 429) return 'Too many wrong keys for this address. Wait fifteen minutes and try again.';
+        if (res.status === 409) return 'This device already holds the maximum number of playlists. Remove one first.';
+        if (res.status === 400) return 'Something in the form is not valid. Check the address and try again.';
+        return 'The service is not answering right now. Try again in a moment.';
+      }
+
+      function render(playlists) {
+        var list = $('playlist-list');
+        while (list.firstChild) list.removeChild(list.firstChild);
+        playlists.forEach(function (p) {
+          var li = document.createElement('li');
+          var info = document.createElement('div');
+          var name = document.createElement('strong');
+          name.textContent = p.name || p.host || 'Playlist';
+          var meta = document.createElement('small');
+          meta.textContent = (p.kind === 'm3u' ? 'M3U link' : 'Xtream codes') + (p.host ? ' · ' + p.host : '');
+          info.appendChild(name);
+          info.appendChild(meta);
+          var remove = document.createElement('button');
+          remove.type = 'button';
+          remove.className = 'act-link';
+          remove.textContent = 'Remove';
+          remove.setAttribute('aria-label', 'Remove ' + name.textContent);
+          remove.addEventListener('click', function () {
+            remove.disabled = true;
+            call({ action: 'remove', mac: device.mac, key: device.key, id: p.id }).then(function (res) {
+              if (res.status === 200) return refresh();
+              remove.disabled = false;
+              say($('add-msg'), problem(res), 'bad');
+            }).catch(function () { remove.disabled = false; say($('add-msg'), problem({ status: 0 }), 'bad'); });
+          });
+          li.appendChild(info);
+          li.appendChild(remove);
+          list.appendChild(li);
+        });
+        $('playlist-empty').hidden = playlists.length > 0;
+      }
+
+      function refresh() {
+        return call({ action: 'list', mac: device.mac, key: device.key }).then(function (res) {
+          if (res.status !== 200) throw res;
+          render(Array.isArray(res.data.playlists) ? res.data.playlists : []);
+        });
+      }
+
+      $('device-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        var mac = normalizeMac($('mac').value);
+        var key = normalizeKey($('key').value);
+        if (!mac) { say($('device-msg'), 'Enter the MAC address exactly as the app shows it (12 letters and digits).', 'bad'); $('mac').focus(); return; }
+        if (!key) { say($('device-msg'), 'Enter the 6-character device key the app shows.', 'bad'); $('key').focus(); return; }
+        $('device-submit').disabled = true;
+        say($('device-msg'), 'Checking…');
+        device = { mac: mac, key: key };
+        refresh().then(function () {
+          say($('device-msg'), '');
+          $('device-name').textContent = mac;
+          $('step-device').hidden = true;
+          $('step-playlists').hidden = false;
+          $('step-add').hidden = false;
+          $('pl-name').focus();
+        }).catch(function (res) {
+          device = null;
+          say($('device-msg'), problem(res && typeof res.status === 'number' ? res : { status: 0 }), 'bad');
+        }).then(function () { $('device-submit').disabled = false; });
+      });
+
+      $('change-device').addEventListener('click', function () {
+        device = null;
+        $('key').value = '';
+        $('step-device').hidden = false;
+        $('step-playlists').hidden = true;
+        $('step-add').hidden = true;
+        say($('add-msg'), '');
+        $('mac').focus();
+      });
+
+      Array.prototype.forEach.call(document.querySelectorAll('input[name="kind"]'), function (radio) {
+        radio.addEventListener('change', function () {
+          var m3u = document.querySelector('input[name="kind"]:checked').value === 'm3u';
+          $('fields-m3u').hidden = !m3u;
+          $('fields-xtream').hidden = m3u;
+          say($('add-msg'), '');
+        });
+      });
+
+      $('add-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (!device) return;
+        var kind = document.querySelector('input[name="kind"]:checked').value;
+        var playlist = { kind: kind, name: $('pl-name').value.trim() };
+        if (kind === 'm3u') {
+          playlist.url = $('pl-url').value.trim();
+          if (!/^https?:\/\/\S+$/i.test(playlist.url)) { say($('add-msg'), 'Enter a link starting with http:// or https://', 'bad'); $('pl-url').focus(); return; }
+        } else {
+          playlist.baseUrl = $('pl-server').value.trim();
+          playlist.username = $('pl-user').value.trim();
+          playlist.password = $('pl-pass').value;
+          if (!playlist.baseUrl) { say($('add-msg'), 'Enter the server address, for example http://example.com:8080', 'bad'); $('pl-server').focus(); return; }
+          if (!playlist.username || !playlist.password) { say($('add-msg'), 'Enter your username and password.', 'bad'); $('pl-user').focus(); return; }
+        }
+        $('add-submit').disabled = true;
+        say($('add-msg'), 'Adding…');
+        call({ action: 'add', mac: device.mac, key: device.key, playlist: playlist }).then(function (res) {
+          if (res.status !== 200) { say($('add-msg'), problem(res), 'bad'); return; }
+          ['pl-name', 'pl-server', 'pl-user', 'pl-pass', 'pl-url'].forEach(function (id) { $(id).value = ''; });
+          say($('add-msg'), 'Added. It arrives on your device within a few seconds if the “Add from the web” screen is open.', 'ok');
+          return refresh().catch(function () {});
+        }).catch(function () {
+          say($('add-msg'), problem({ status: 0 }), 'bad');
+        }).then(function () { $('add-submit').disabled = false; });
+      });
+
+      // A link can carry the MAC address (never the key): activate.html?mac=00:1A:79:AB:CD:EF
+      var preset = normalizeMac(new URLSearchParams(location.search).get('mac'));
+      if (preset) { $('mac').value = preset; $('key').focus(); }
+    })();
+  </script>
+</body>
+</html>

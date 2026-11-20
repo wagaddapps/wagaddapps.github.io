@@ -103,6 +103,9 @@
   .app h3 { font-family: var(--display); font-weight: 800; font-size: 28px; margin: 0; letter-spacing: -.02em; }
   .app h3 .ar { font-family: var(--arabic); font-weight: 700; font-size: 24px; margin-inline-start: 10px; color: var(--slate); }
   .app p { margin: 0; color: var(--slate); max-width: 38em; }
+  .app .legal { grid-column: 3; margin: 6px 0 0; display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 15px; }
+  .app .legal a { color: var(--slate); text-decoration: none; border-bottom: 1px solid var(--line); }
+  .app .legal a:hover { color: inherit; }
   .status { display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 600; white-space: nowrap; background: #fff3cf; color: #6b4e00; padding: 4px 12px; border-radius: 999px; }
   .status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #e0a100; animation: blink 1.8s ease-in-out infinite; }
   @keyframes blink { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: .35; transform: scale(.7); } }
@@ -129,7 +132,8 @@
     .activity, .activity + .activity { padding: 28px 0 8px; border-left: 0; }
     .activity + .activity { border-top: 1px solid var(--line); }
     .app { grid-template-columns: 64px 1fr; gap: 8px 18px; align-items: start; }
-    .app .icon { grid-row: span 3; }
+    .app .icon { grid-row: span 4; }
+    .app .legal { grid-column: 2; }
     .btn.ghost { margin: 12px 0 0; }
     .nav { gap: 16px; font-size: 15px; }
   }
@@ -220,7 +224,7 @@
   <section id="apps" class="apps">
     <div class="wrap">
       <h2 class="reveal">Our apps</h2>
-      <p class="lede reveal" style="--n:1">Products we’re building ourselves. Each one is in development and will get its own page here when it launches.</p>
+      <p class="lede reveal" style="--n:1">Products we’re building ourselves. Each one is in development; its privacy, terms and support pages are already here.</p>
       <div class="app-list">
         <article class="app reveal">
           <div class="icon dark" aria-hidden="true">
@@ -228,6 +232,7 @@
           </div>
           <h3>Luqma <span class="ar" lang="ar" dir="rtl">لقمة</span></h3>
           <p>Food and nutrition tracking made for the Gulf. Photograph a meal or a delivery order and see calories, protein and what to eat next. Available in English, Arabic and French.</p>
+          <p class="legal"><a href="/luqma/privacy.html">Privacy</a><a href="/luqma/terms.html">Terms</a><a href="/luqma/support.html">Support</a></p>
           <span class="status">In development</span>
         </article>
         <article class="app reveal">
@@ -236,6 +241,7 @@
           </div>
           <h3>Gym app</h3>
           <p>A training companion that knows the machines in your gym, plans your week around your goal, and records each exercise you complete.</p>
+          <p class="legal"><a href="/gymapp/privacy.html">Privacy</a><a href="/gymapp/terms.html">Terms</a><a href="/gymapp/support.html">Support</a></p>
           <span class="status">In development</span>
         </article>
         <article class="app reveal">
@@ -243,7 +249,26 @@
             <svg viewBox="0 0 48 48"><rect class="draw" pathLength="1" style="--k:0" x="7" y="10" width="34" height="28" rx="6"/><path class="draw" pathLength="1" style="--k:1" d="M20 18l12 6-12 6z"/></svg>
           </div>
           <h3>FlickDate</h3>
-          <p>A mobile app for short videos and your personal media library, with downloads for offline viewing.</p>
+          <p>Dating built on what you actually watch: match on film and series taste, then agree on something to see together. Adults only.</p>
+          <p class="legal"><a href="/flickdate/privacy.html">Privacy</a><a href="/flickdate/terms.html">Terms</a><a href="/flickdate/support.html">Support</a></p>
+          <span class="status">In development</span>
+        </article>
+        <article class="app reveal">
+          <div class="icon dark" aria-hidden="true">
+            <svg viewBox="0 0 48 48"><rect class="draw" pathLength="1" style="--k:0" x="6" y="12" width="26" height="24" rx="5"/><path class="draw" pathLength="1" style="--k:1" d="M32 20l10-6v20l-10-6z"/><path class="draw" pathLength="1" style="--k:2" d="M14 20v8M20 20v8M26 20v8"/></svg>
+          </div>
+          <h3>FlickAlong</h3>
+          <p>Watch together with your partner, friends and family: shared picks, cinema showtimes near you, and your own streaming library in one place.</p>
+          <p class="legal"><a href="/flickalong/privacy.html">Privacy</a><a href="/flickalong/terms.html">Terms</a><a href="/flickalong/support.html">Support</a></p>
+          <span class="status">In development</span>
+        </article>
+        <article class="app reveal">
+          <div class="icon dark" aria-hidden="true">
+            <svg viewBox="0 0 48 48"><rect class="draw" pathLength="1" style="--k:0" x="6" y="14" width="36" height="24" rx="5"/><path class="draw" pathLength="1" style="--k:1" d="M17 14l3-5h8l3 5"/><circle class="draw" pathLength="1" style="--k:2" cx="24" cy="26" r="7"/></svg>
+          </div>
+          <h3>EventLens</h3>
+          <p>Every guest&rsquo;s photos of the party in one private gallery, live as the evening happens. No app store trip for guests: they join from a link.</p>
+          <p class="legal"><a href="/eventlens/privacy.html">Privacy</a><a href="/eventlens/terms.html">Terms</a><a href="/eventlens/support.html">Support</a></p>
           <span class="status">In development</span>
         </article>
       </div>
